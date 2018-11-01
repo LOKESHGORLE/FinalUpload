@@ -1,0 +1,7 @@
+D:\LibCheck\FinalAcessTEst\bin\Debug\FinalAcessTEst.exe.config
+D:\LibCheck\FinalAcessTEst\bin\Debug\FinalAcessTEst.exe
+D:\LibCheck\FinalAcessTEst\bin\Debug\FinalAcessTEst.pdb
+D:\LibCheck\FinalAcessTEst\obj\Debug\FinalAcessTEst.csprojAssemblyReference.cache
+D:\LibCheck\FinalAcessTEst\obj\Debug\FinalAcessTEst.csproj.CoreCompileInputs.cache
+D:\LibCheck\FinalAcessTEst\obj\Debug\FinalAcessTEst.exe
+D:\LibCheck\FinalAcessTEst\obj\Debug\FinalAcessTEst.pdb
