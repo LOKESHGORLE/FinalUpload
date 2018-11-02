@@ -95,20 +95,27 @@ namespace Dataaccess
 
             public  void UploadFoldersRecursively(ClientContext clientContext, string sourceFolder, string destinationLibraryTitle)
             {
+                string[] FolderArr= sourceFolder.Split('\\');
+            foreach (string i in FolderArr)
+            {
+                Console.WriteLine(i);
+            }
+
+
                 Web web = clientContext.Web;
                 var query = clientContext.LoadQuery(web.Lists.Where(p => p.Title == destinationLibraryTitle));
                 clientContext.ExecuteQuery();
                 List documentsLibrary = query.FirstOrDefault();
                 var folder = documentsLibrary.RootFolder;
-                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
+                //System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
 
                 clientContext.Load(documentsLibrary.RootFolder);
                 clientContext.ExecuteQuery();
 
-                folder = documentsLibrary.RootFolder.Folders.Add(di.Name);
+               // folder = documentsLibrary.RootFolder.Folders.Add(di.Name);
                 clientContext.ExecuteQuery();
 
-                UploadFolder(clientContext, di, folder);
+               // UploadFolder(clientContext, di, folder);
             }
         
     }
