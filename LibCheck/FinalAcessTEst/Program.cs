@@ -21,73 +21,100 @@ namespace FinalAcessTEst
             Dataaccess.Class1 Dal = new Dataaccess.Class1();
             Dataaccess.Testing tests = new Dataaccess.Testing();
 
-            DateTime start;
-            DateTime end;
-            TimeSpan time;
+           
             string domainrootfolder = "/teams/ExampleGratia/LokeshPractice/UploadFolderTest";
             string localrootfolder = @"D:/UploadFolderTest";
             string fullPath = @"D:\UploadFolderTest/New Microsoft Word Document";
 
-            DataTable dt = new DataTable();
-            string SQl = "select Path+'/'+Name as FullPath from FileInfo;";
-            start = DateTime.Now;
-            end = DateTime.Now;
-
-            dt = Dal.getTableInfo("FileInfo",SQl);
-            foreach(DataRow rw in dt.Rows)
-            {
+            //DataTable dt = new DataTable();
+            //string SQl = "select Path+'/'+Name as FullPath from FileInfo;";
+            //dt = Dal.getTableInfo("FileInfo",SQl);
+            //foreach(DataRow rw in dt.Rows)
+            //{
                 
-                Console.WriteLine(rw["FullPath"]);
-            }
+            //    Console.WriteLine(rw["FullPath"]);
+            //}
 
            
 
 
             DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
-
-            foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, true, typeof(NTAccount)))
+            //DirectorySecurity dSecurity1 = Directory.GetAccessControl(localrootfolder).AccessRightType.;
+            AuthorizationRuleCollection collection = Directory.
+                                           GetAccessControl(localrootfolder)
+                                           .GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount));
+            foreach (FileSystemAccessRule rule in collection)
             {
-               
+                Console.WriteLine(rule.FileSystemRights.ToString()+"     :    "+rule.AccessControlType);
 
-                
+            }
+            Console.WriteLine("--------------------------------------1212121------------\n\n");
+                foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, true, typeof(NTAccount)))
+            {
                 Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
-                if (rule.IdentityReference.Value.ToLower() == rule.IdentityReference.Value)
+
+                foreach (var value in Enum.GetValues(typeof(FileSystemRights)))
                 {
-                    Console.WriteLine(rule.FileSystemRights);
+                    //Console.WriteLine(value.ToString());
+                    if (rule.FileSystemRights.ToString() == value.ToString())
+                    {
+                        Console.WriteLine("entered2");
+                        Console.WriteLine("Account:{0}  right:{1}", rule.IdentityReference.Value, value.ToString());
+                    }
                 }
 
-                if (rule.FileSystemRights == FileSystemRights.Read)
-                {
-                    Console.WriteLine("entered2");
-                    Console.WriteLine("Account:{0}", rule.IdentityReference.Value);
-                }
-            }
+                //if (rule.IdentityReference.Value.ToLower() == rule.IdentityReference.Value)
+                //{
+                //   // Console.WriteLine(rule.FileSystemRights);
+                //}
 
-            end = DateTime.Now;
-            time = DateTime.Now - start;
-            Console.WriteLine(start.ToString("hh.mm.ss.ffffff"));
-            Console.WriteLine(end.ToString("hh.mm.ss.ffffff"));
-
-
-            string Text = String.Format("{0}.{1}", time.Seconds, time.Milliseconds.ToString());
-            Console.WriteLine(Text);
-
-            Console.WriteLine("Enter your password.");
-            Credentials crd = new Credentials();
-            using (var context = new ClientContext("https://acuvatehyd.sharepoint.com/teams/ExampleGratia"))
-
-            {
-                Console.WriteLine("----------- sharepoint--------------");
-                context.Credentials = new SharePointOnlineCredentials(crd.userName, crd.password);
-                //GetFile(context);
-               
-                 tests.UploadFoldersRecursively(context, @"D:\UploadFolderTest","LokeshPractice");
-                Console.WriteLine("Exceution done");
 
             }
+            Console.WriteLine("---------------new one-------------------------\n\n");
+           //Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
+
+
+            //directoryInfo();
+
+
+            //Console.WriteLine("Enter your password.");
+            //Credentials crd = new Credentials();
+            //using (var context = new ClientContext("https://acuvatehyd.sharepoint.com/teams/ExampleGratia"))
+
+            //{
+            //    Console.WriteLine("----------- sharepoint--------------");
+            //    context.Credentials = new SharePointOnlineCredentials(crd.userName, crd.password);
+            //    //GetFile(context);
+
+            //    tests.UploadFoldersRecursively(context, @"D:\UploadFolderTest", "LokeshPractice");
+            //    Console.WriteLine("Exceution done");
+
+            //}
 
             Console.Read();
         }
+
+        protected static void directoryInfo()
+        {
+            var di = new DirectoryInfo(@"D:/UploadFolderTest");
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                Console.WriteLine(dir.FullName + "<br/>");
+                DirectorySecurity ds = dir.GetAccessControl(AccessControlSections.Access);
+                foreach (FileSystemAccessRule fsar in ds.GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount)))
+                {
+                    string userName = fsar.IdentityReference.Value;
+                    string userRights = fsar.FileSystemRights.ToString();
+                    string userAccessType = fsar.AccessControlType.ToString();
+                    string ruleSource = fsar.IsInherited ? "Inherited" : "Explicit";
+                    string rulePropagation = fsar.PropagationFlags.ToString();
+                    string ruleInheritance = fsar.InheritanceFlags.ToString();
+                    Console.WriteLine(userName + " : " + userAccessType + " : " + userRights + " : " + ruleSource + " : " + rulePropagation + " : " + ruleInheritance + "<br/>");
+                }
+            }
+        }
+
+
 
         public static void GetFile(ClientContext cxt)
         {
