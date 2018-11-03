@@ -23,7 +23,19 @@ namespace FinalAcessTEst
 
         static void Main(string[] args)
         {
+            string path="";
+            string full = @"D:/UploadFolderTest/lev1sf1";
+            string[] Arr = full.Split('/');
+            int a = Array.IndexOf(Arr, "UploadFolderTest");
+            Console.WriteLine(a);
+            for (int i = 0; i <= a; i++)
+            {
+                path += Arr[i]+"/";
+            }
+            Console.WriteLine(path);
 
+            if (false)
+            { 
             Dataaccess.Class1 Dal = new Dataaccess.Class1();
             Dataaccess.Testing tests = new Dataaccess.Testing();
             Dataaccess.testuploadDB dbtrail = new Dataaccess.testuploadDB();
@@ -34,7 +46,7 @@ namespace FinalAcessTEst
             string fullPath = @"D:\UploadFolderTest/New Microsoft Word Document";
 
 
-            
+
 
 
             Console.WriteLine("-----------------------------------------------------------");
@@ -191,26 +203,26 @@ namespace FinalAcessTEst
             //For Getting all Domain Users
             if (false)
             {
-                           
-            Console.WriteLine("\n\t\t\t*For Getting all Domain Users*");
 
-            using (var context = new PrincipalContext(ContextType.Domain, "acuvate.com"))
-            {
-                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                Console.WriteLine("\n\t\t\t*For Getting all Domain Users*");
+
+                using (var context = new PrincipalContext(ContextType.Domain, "acuvate.com"))
                 {
-                    //int cnt = 1;
-                    //foreach (var result in searcher.FindAll())
-                    //{
-                    //    DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
-                    //    Console.WriteLine("First Name: " + de.Properties["givenName"].Value);
-                    //    Console.WriteLine("SAM account name   : " + de.Properties["samAccountName"].Value);
-                    //    Console.WriteLine("User principal name: " + de.Properties["userPrincipalName"].Value);
-                    //    Console.WriteLine();
-                    //    cnt++;
-                    //}
-                    //Console.WriteLine("Total users: " + cnt);
+                    using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                    {
+                        //int cnt = 1;
+                        //foreach (var result in searcher.FindAll())
+                        //{
+                        //    DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
+                        //    Console.WriteLine("First Name: " + de.Properties["givenName"].Value);
+                        //    Console.WriteLine("SAM account name   : " + de.Properties["samAccountName"].Value);
+                        //    Console.WriteLine("User principal name: " + de.Properties["userPrincipalName"].Value);
+                        //    Console.WriteLine();
+                        //    cnt++;
+                        //}
+                        //Console.WriteLine("Total users: " + cnt);
+                    }
                 }
-            }
             }
             Console.WriteLine("---------------new one-------------------------\n\n");
             //Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
@@ -218,7 +230,7 @@ namespace FinalAcessTEst
 
             //directoryInfo();
 
-           
+
             //Console.WriteLine("Enter your password.");
             //Credentials crd = new Credentials();
             //using ( context = new ClientContext("https://acuvatehyd.sharepoint.com/teams/ExampleGratia"))
@@ -236,7 +248,7 @@ namespace FinalAcessTEst
             //    Console.WriteLine("Exceution done");
 
             //}
-
+        }
             Console.Read();
         }
         static string AssignPermission(ClientContext ctx, string User, string folderUrl, List<RoleType> Mappedrole)
