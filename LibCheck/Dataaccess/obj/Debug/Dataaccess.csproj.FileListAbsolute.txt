@@ -20,3 +20,4 @@ D:\FinalUpload\LibCheck\Dataaccess\bin\Debug\Microsoft.SharePoint.Client.Taxonom
 D:\FinalUpload\LibCheck\Dataaccess\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
 D:\FinalUpload\LibCheck\Dataaccess\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
 D:\FinalUpload\LibCheck\Dataaccess\obj\Debug\Dataaccess.csproj.CopyComplete
+D:\FinalUpload\LibCheck\Dataaccess\bin\Debug\Novell.Directory.Ldap.dll

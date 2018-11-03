@@ -30,3 +30,4 @@ D:\FinalUpload\LibCheck\FinalAcessTEst\bin\Debug\Microsoft.SharePoint.Client.Sea
 D:\FinalUpload\LibCheck\FinalAcessTEst\bin\Debug\Microsoft.SharePoint.Client.Taxonomy.dll
 D:\FinalUpload\LibCheck\FinalAcessTEst\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
 D:\FinalUpload\LibCheck\FinalAcessTEst\bin\Debug\Microsoft.SharePoint.Client.WorkflowServices.dll
+D:\FinalUpload\LibCheck\FinalAcessTEst\bin\Debug\Novell.Directory.Ldap.dll
