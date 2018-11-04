@@ -20,18 +20,44 @@ namespace FinalAcessTEst
     class Program
     {
         static ClientContext context;
+        Permissions pr = new Permissions();
 
         static void Main(string[] args)
         {
+            Dataaccess.Testing tests = new Dataaccess.Testing();
             string localrootfolder = @"D:/UploadFolderTest/lev1sf1";
-            HasFolderWritePermission(localrootfolder);
+
+            Console.WriteLine("Enter your password.");
+            Credentials crd = new Credentials();
+            using (context = new ClientContext("https://acuvatehyd.sharepoint.com/teams/ExampleGratia"))
+
+            {
+                Console.WriteLine("----------- sharepoint--------------");
+                context.Credentials = new SharePointOnlineCredentials(crd.userName, crd.password);
+                //GetFile(context);
+
+                tests.UploadFoldersRecursively(context, @"D:\UploadFolderTest", "LokeshPractice");
+                //ListSPPermissions12(context);
+                //dbtrail.UploadFolderstart(context, @"D:\UploadFolderTest", "LokeshPractice");
+
+                //AssignPermission(context, user, localrootfolder, RoleType.Reader);
+                Console.WriteLine("Exceution done");
+
+            }
+
+
+
+
+
+
+            //  HasFolderWritePermission(localrootfolder);
             foreach (FileSystemRights value in Enum.GetValues(typeof(FileSystemRights)))
             {
                 Console.WriteLine(value.ToString());
                // getallPermissionsonDIr(localrootfolder, value);
             }
             Console.WriteLine("\n\n\n");
-            IsReadable(localrootfolder);
+           //IsReadable(localrootfolder);
             //
             // GetAllUsers();
 
@@ -41,8 +67,8 @@ namespace FinalAcessTEst
 
             if (false)
             {
-                Dataaccess.Class1 Dal = new Dataaccess.Class1();
-                Dataaccess.Testing tests = new Dataaccess.Testing();
+               // Dataaccess.Class1 Dal = new Dataaccess.Class1();
+              //  Dataaccess.Testing tests = new Dataaccess.Testing();
                 Dataaccess.testuploadDB dbtrail = new Dataaccess.testuploadDB();
 
 
@@ -72,7 +98,7 @@ namespace FinalAcessTEst
                 //    Console.WriteLine(rw["FullPath"]);
                 //}
                 Console.WriteLine("Enter your password.");
-                Credentials crd = new Credentials();
+                //Credentials crd = new Credentials();
                 using (context = new ClientContext("https://acuvatehyd.sharepoint.com/teams/ExampleGratia"))
 
                 {

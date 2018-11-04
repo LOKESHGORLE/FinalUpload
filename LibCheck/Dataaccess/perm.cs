@@ -8,20 +8,17 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using Dataaccess;
 
-namespace FinalAcessTEst
+namespace Dataaccess
 {
-   public class Permissions
+    public class perm
     {
-       
-
-        public static void GetPermmssion(ClientContext context,string localrootfolder)
+        public static void GetPermmssion(ClientContext context, string localrootfolder)
         {
             Class1 Dal = new Class1();
             string user;
             DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
-           
+
             Console.WriteLine("--------------------------------------Users and their rights------------\n\n");
             int cnt = 0;
 
@@ -58,7 +55,7 @@ namespace FinalAcessTEst
                     }
 
                 }
-               
+
             }
 
         }
@@ -72,7 +69,7 @@ namespace FinalAcessTEst
 
 
                 List dlname = ctx.Web.Lists.GetByTitle("LokeshPractice");
-                string foldername = folderUrl.Split('/').Last();
+                string foldername = folderUrl.Split('\\').Last();
                 Folder newFolder = dlname.RootFolder.Folders.Add(foldername);
                 ctx.ExecuteQuery();
 
@@ -80,7 +77,7 @@ namespace FinalAcessTEst
                 {
                     if (User.Length > 0)
                     {
-                       
+
                         newFolder.ListItemAllFields.BreakRoleInheritance(false, true);
                         var roles = new RoleDefinitionBindingCollection(ctx);
                         roles.Add(ctx.Web.RoleDefinitions.GetByType(roleType));
@@ -104,4 +101,5 @@ namespace FinalAcessTEst
 
 
     }
+
 }

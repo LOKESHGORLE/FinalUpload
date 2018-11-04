@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="ErrrorLog.cs" />
+    <Compile Include="perm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="testing.cs" />
     <Compile Include="testuploadDB.cs" />

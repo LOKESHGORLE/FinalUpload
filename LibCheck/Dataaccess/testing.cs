@@ -9,10 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client.DocumentManagement;
 
+
+
 namespace Dataaccess
 {
     public class Testing
     {
+        perm pers = new perm();
         UploadTimeLog UploadTimeLog = new UploadTimeLog();
         ErrrorLog ErrrorLog = new ErrrorLog();
 
@@ -76,15 +79,9 @@ namespace Dataaccess
                     {
                     Console.WriteLine(dirInfo.FullName);
                     DirectorySecurity dSecurity = dirInfo.GetAccessControl();
-                   // DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
+                    // DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
 
-                    foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, true, typeof(NTAccount)))
-                    {
-                       
-                        Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
-
-
-                    }
+                    perm.GetPermmssion(clientContext,dirInfo.FullName); 
 
                         Folder subFolder = folder.Folders.Add(dirInfo.Name);
                         clientContext.ExecuteQuery();
@@ -107,15 +104,15 @@ namespace Dataaccess
                 clientContext.ExecuteQuery();
                 List documentsLibrary = query.FirstOrDefault();
                 var folder = documentsLibrary.RootFolder;
-                //System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
+                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
 
                 clientContext.Load(documentsLibrary.RootFolder);
                 clientContext.ExecuteQuery();
 
-               // folder = documentsLibrary.RootFolder.Folders.Add(di.Name);
+               folder = documentsLibrary.RootFolder.Folders.Add(di.Name);
                 clientContext.ExecuteQuery();
 
-               // UploadFolder(clientContext, di, folder);
+                UploadFolder(clientContext, di, folder);
             }
         
     }
