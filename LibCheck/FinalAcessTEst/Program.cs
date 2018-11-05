@@ -24,8 +24,46 @@ namespace FinalAcessTEst
 
         static void Main(string[] args)
         {
-            Dataaccess.Testing tests = new Dataaccess.Testing();
             string localrootfolder = @"D:/UploadFolderTest/lev1sf1";
+            Dataaccess.perm perm = new Dataaccess.perm();
+            Dataaccess.Testing tests = new Dataaccess.Testing();
+            Dataaccess.Class1 dal = new Dataaccess.Class1();
+            List<string> FoldPerm = new List<string>();
+
+            using (var context = new PrincipalContext(ContextType.Domain, "acuvate.com"))
+            {
+                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                {
+                    int cnt = 1;
+                    foreach (var result in searcher.FindAll())
+                    {
+                        DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
+                        //Console.WriteLine("First Name: " + de.Properties["givenName"].Value);
+                        Console.WriteLine("SAM account name   : " + de.Properties["samAccountName"].Value);
+                        //Console.WriteLine("User principal name: " + de.Properties["userPrincipalName"].Value);
+                       //string abc = de.Properties["userPrincipalName"].Value.ToString();
+                        //Console.WriteLine(abc);
+                        if (false)
+                        {
+                           // string SQl = "insert into DomainUsers values ('" + de.Properties["userPrincipalName"].Value + "');";
+                            //dal.InsertInto("FolderPermissions", SQl);
+                        }
+                        cnt++;
+                    }
+                    Console.WriteLine("Total users: " + cnt);
+                }
+            }
+           
+            Console.WriteLine("=---------------------from list------------------------------");
+          //  Dataaccess.perm.GetFilePermmssion(localrootfolder);
+            Dataaccess.perm.GetFolderPermmssion(localrootfolder);
+
+
+
+
+
+
+           // string localrootfolder = @"D:/UploadFolderTest/lev1sf1";
 
             Console.WriteLine("Enter your password.");
             Credentials crd = new Credentials();
@@ -45,6 +83,12 @@ namespace FinalAcessTEst
 
             }
 
+            //foreach (var value in Enum.GetValues(typeof(RoleType)))
+            //{
+            //    string SQl = "insert into RoleTypes values ('" + value.ToString()+ "');";
+            //    Dal.InsertInto("FolderPermissions", SQl);
+            //    Console.WriteLine(value.ToString());
+            //}
 
 
 

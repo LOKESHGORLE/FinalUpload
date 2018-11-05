@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 
 namespace Dataaccess
 {
     public class Class1
     {
-
+       // var connection =  System.Configuration.ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
+      //  public static String Constr = @"DataSource=ACUPC-208; Initial Catalog = FolderUpload; Integrated Security = True";
         DataTable TableInfo = new DataTable();
 
         public DataTable getTableInfo(string DatabaseTableName)
@@ -48,7 +50,7 @@ namespace Dataaccess
             return TableInfo;
         }
 
-        public void InsertInto(string DatabaseTableName, string SqlQuery)
+        public void InsertInto( string SqlQuery)
         {
 
             SqlConnection cn = new SqlConnection(@"Data Source=.;Initial Catalog=FolderUpload;Integrated Security=True");
@@ -62,26 +64,46 @@ namespace Dataaccess
 
         }
 
-        public void UpdateAfterDeleteServiceLine()//copy
+        public void InsertFilePermissions(int Id,string Username,string FilePermission)//copy
         {
             using (SqlConnection connection = new SqlConnection())
             {
-                connection.ConnectionString = @"Data Source=.;Initial Catalog=NotificationHub;Integrated Security=True";
+                connection.ConnectionString = @"Data Source=.;Initial Catalog=FolderUpload;Integrated Security=True";
                 connection.Open();
+                                              
+                
+                    SqlCommand sqlCommand = new SqlCommand("Proc_InsertFilePermissions", connection);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@pFileID", SqlDbType.Int).Value = Id;
+                sqlCommand.Parameters.Add("@pUserName", SqlDbType.NVarChar).Value = Username;
+                sqlCommand.Parameters.Add("@pFilePermission", SqlDbType.NVarChar).Value = FilePermission;
 
-
-                //foreach (string slms in Slm1)
-                //{
-                //    SqlCommand sqlCommand1 = new SqlCommand("Proc_InsertServLineOpManagers", connection);
-                //    sqlCommand1.CommandType = CommandType.StoredProcedure;
-                //    //sqlCommand1.Parameters.Add("@pId", SqlDbType.Int).Value =pId;
-                //    sqlCommand1.Parameters.Add("@pServiceLineId", SqlDbType.Int).Value = pServLineId;
-
-                //    sqlCommand1.ExecuteNonQuery();
-                //}
+                sqlCommand.ExecuteNonQuery();
+                
                 connection.Close();
             }
         }
+
+        public void InsertFolderPermissions(int Id, string Username, string FolderPermission)//copy
+        {
+            using (SqlConnection connection = new SqlConnection())
+            {
+                connection.ConnectionString = @"Data Source=.;Initial Catalog=FolderUpload;Integrated Security=True";
+                connection.Open();
+
+
+                SqlCommand sqlCommand = new SqlCommand("Proc_InsertFolderPermissions", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@pFolderID", SqlDbType.Int).Value = Id;
+                sqlCommand.Parameters.Add("@pUserName", SqlDbType.NVarChar).Value = Username;
+                sqlCommand.Parameters.Add("@pFolderPermission", SqlDbType.NVarChar).Value = FolderPermission;
+
+                sqlCommand.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
         public DataTable GetMappingRole(string MappedRole)
         {
             SqlDataAdapter adapter;

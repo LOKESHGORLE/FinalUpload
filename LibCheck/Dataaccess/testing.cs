@@ -81,7 +81,7 @@ namespace Dataaccess
                     DirectorySecurity dSecurity = dirInfo.GetAccessControl();
                     // DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
 
-                    perm.GetPermmssion(clientContext,dirInfo.FullName); 
+                   // perm.GetPermmssion(clientContext,dirInfo.FullName); 
 
                         Folder subFolder = folder.Folders.Add(dirInfo.Name);
                         clientContext.ExecuteQuery();

@@ -13,11 +13,11 @@ namespace Dataaccess
 {
     public class perm
     {
-        public static void GetPermmssion(ClientContext context, string localrootfolder)
+        public static void GetFilePermmssion(string FilePath)
         {
             Class1 Dal = new Class1();
             string user;
-            DirectorySecurity dSecurity = Directory.GetAccessControl(localrootfolder);
+            FileSecurity dSecurity = System.IO.File.GetAccessControl(FilePath);
 
             Console.WriteLine("--------------------------------------Users and their rights------------\n\n");
             int cnt = 0;
@@ -26,34 +26,57 @@ namespace Dataaccess
             foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, true, typeof(NTAccount)))
             {
 
-                Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
-                string[] splitRole = rule.FileSystemRights.ToString().Split(',');
-                user = rule.IdentityReference.Value.Split(Convert.ToChar(92)).Last().ToString();
-                foreach (string s in splitRole)
+                //Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
+                string[] UsernameSplit = rule.IdentityReference.Value.Split('\\');
+                string DomainName = UsernameSplit[0];
+                if (DomainName == Environment.UserDomainName)
                 {
-                    Console.WriteLine(rule.IdentityReference.Value + ":" + s);
 
-                    DataTable MappedRoles = Dal.GetMappingRole(s);
-                    List<RoleType> MaproleList = new List<RoleType>();
 
-                    foreach (DataRow row in MappedRoles.Rows)
+                    string[] splitRights = rule.FileSystemRights.ToString().Split(',');
+                    user = rule.IdentityReference.Value.Split(Convert.ToChar(92)).Last().ToString()+"@acuvate.com";
+                    foreach (string right in splitRights)
                     {
-                        foreach (RoleType value in Enum.GetValues(typeof(RoleType)))
-                        {
-                            Console.WriteLine(value.ToString());
-                            if (value.ToString() == row["RoleType"].ToString())
-                            {
-                                MaproleList.Add(value);
-                            }
-                        }
+                        Console.WriteLine(UsernameSplit[1] + ":" + right);
 
+                        Dal.InsertFilePermissions(1,user, right.Trim());
+                        
+                    }
+                }
+
+            }
+
+        }
+
+        public static void GetFolderPermmssion(string FolderPath)
+        {
+            Class1 Dal = new Class1();
+            string user;
+            DirectorySecurity dSecurity = Directory.GetAccessControl(FolderPath);
+
+            Console.WriteLine("--------------------------------------Users and their rights------------\n\n");
+            int cnt = 0;
+
+
+            foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, true, typeof(NTAccount)))
+            {
+
+                //Console.WriteLine(rule.IdentityReference.Value + ":" + rule.FileSystemRights.ToString());
+                string[] UsernameSplit = rule.IdentityReference.Value.Split('\\');
+                string DomainName = UsernameSplit[0];
+                if (DomainName == Environment.UserDomainName)
+                {
+
+
+                    string[] splitRights = rule.FileSystemRights.ToString().Split(',');
+                    user = rule.IdentityReference.Value.Split(Convert.ToChar(92)).Last().ToString() + "@acuvate.com";
+                    foreach (string right in splitRights)
+                    {
+                        Console.WriteLine(UsernameSplit[1] + ":" + right);
+
+                        Dal.InsertFolderPermissions(1, user, right.Trim());
 
                     }
-                    if (MaproleList.Count > 0)
-                    {
-                        AssignPermission(context, user, localrootfolder, MaproleList);
-                    }
-
                 }
 
             }
