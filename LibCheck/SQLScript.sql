@@ -40,7 +40,7 @@ select * from FileInfo
 
 create table FolderPermissions(
 	Id int identity(1,1) primary key,
-	PermissionLevel nvarchar(30)
+	PermissionLevel nvarchar(30) unique
 )
 
 create table SPPermissions(
@@ -60,7 +60,22 @@ create table FolderToSPPermissions(
 	RoleTypesId int foreign key references RoleTypes(Id),
 )
 
-create table 
+create table DomainUsers(
+UserID int identity(1,1) Primary key,
+Name nvarchar(100)
+)
+
+create table UserFolderPermissions(
+SubFolderID int  foreign key references SubFolder(Id),
+UserID int foreign key references DomainUsers(UserId),
+PermissionLevelId int foreign key references FolderPermissions(Id)
+)
+
+create table UserFilePermissions(
+FileID int  foreign key references FileInfo(Id),
+UserID int foreign key references DomainUsers(UserId),
+PermissionLevelId int foreign key references FolderPermissions(Id)
+)
 
 insert into RootFolder values ('UploadFolderTest','D:\','Lokesh','Lokesh1',SYSDATETIME(),SYSDATETIME());
 select * from Rootfolder;
@@ -83,6 +98,50 @@ insert into FileInfo(SubFolderId,Name,Path) values(3,'New Microsoft Word Documen
 select REPLACE(Path,'\','/')+'/'+Name from FileInfo;
 
 select * from FolderPermissions;
-select * from SPPermissions
+select * from SPPermissions;
+select * from RoleTypes;
+select r.RoleType from RoleTypes r where r.Id in ( 
+select RoleTypesId from FolderToSPPermissions where FolderPermissionsId=(select Id from FolderPermissions where PermissionLevel='Read'));
+select * from FolderToSPPermissions  where FolderPermissionsId=18
+
+select RoleType from RoleTypes  where Id in (select RoleTypesId from FolderToSPPermissions where FolderPermissionsId = (select Id from FolderPermissions where PermissionLevel = 'ReadAndExecute')); 
+
+create table x as select * from FolderToSPPermissions;
+SELECT * INTO x FROM  FolderToSPPermissions;
+select * from x;
+select * from DomainUsers;
+insert into  DomainUsers(Name) values('Lokesh');
+SELECT name, COUNT(name) 
+FROM DomainUsers
+GROUP BY name
+HAVING COUNT(name) > 1;
+delete from DomainUsers where name='';
+select * from UserFilePermissions;
+select * from FolderPermissions;
+select Id from FolderPermissions where PermissionLevel=' Synchronize';
+select * from UserFolderPermissions;
 
 
+create or alter procedure Proc_InsertFilePermissions (@pFileID int, 
+														@pUserName nvarchar(100),
+														@pFilePermission nvarchar(50))
+as
+declare @UserId int;
+declare @FilePermissionId int;
+begin
+select  @UserId=UserID from DomainUsers where name like @pUserName;
+select  @FilePermissionId=Id from FolderPermissions where PermissionLevel=@pFilePermission;
+insert into UserFilePermissions (FileID,UserID,PermissionLevelId) values (@pFileID,@UserId, @FilePermissionId);
+end
+
+create or alter procedure Proc_InsertFolderPermissions (@pFolderID int, 
+														@pUserName nvarchar(100),
+														@pFolderPermission nvarchar(50))
+as
+declare @UserId int;
+declare @FolderPermissionId int;
+begin
+select  @UserId=UserID from DomainUsers where name like @pUserName;
+select @FolderPermissionId=Id from FolderPermissions where PermissionLevel=@pFolderPermission;
+insert into UserFolderPermissions (SubFolderID,UserID,PermissionLevelId) values (@pFolderID,@UserId,@FolderPermissionId);
+end
