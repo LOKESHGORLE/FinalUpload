@@ -145,3 +145,8 @@ select  @UserId=UserID from DomainUsers where name like @pUserName;
 select @FolderPermissionId=Id from FolderPermissions where PermissionLevel=@pFolderPermission;
 insert into UserFolderPermissions (SubFolderID,UserID,PermissionLevelId) values (@pFolderID,@UserId,@FolderPermissionId);
 end
+
+
+DELETE TOP (10)
+FROM  UserFilePermissions
+insert into FolderToSPPermissions values(13,3)
