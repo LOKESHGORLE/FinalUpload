@@ -24,39 +24,44 @@ namespace FinalAcessTEst
 
         static void Main(string[] args)
         {
-            string localrootfolder = @"D:/UploadFolderTest/lev1sf1";
+            string localrootfolder = @"D:\UploadFolderTest\lev1sf1\New Microsoft PowerPoint Presentation";
             Dataaccess.perm perm = new Dataaccess.perm();
             Dataaccess.Testing tests = new Dataaccess.Testing();
             Dataaccess.Class1 dal = new Dataaccess.Class1();
             List<string> FoldPerm = new List<string>();
 
-            using (var context = new PrincipalContext(ContextType.Domain, "acuvate.com"))
-            {
-                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
-                {
-                    int cnt = 1;
-                    foreach (var result in searcher.FindAll())
-                    {
-                        DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
-                        //Console.WriteLine("First Name: " + de.Properties["givenName"].Value);
-                        Console.WriteLine("SAM account name   : " + de.Properties["samAccountName"].Value);
-                        //Console.WriteLine("User principal name: " + de.Properties["userPrincipalName"].Value);
-                       //string abc = de.Properties["userPrincipalName"].Value.ToString();
-                        //Console.WriteLine(abc);
-                        if (false)
-                        {
-                           // string SQl = "insert into DomainUsers values ('" + de.Properties["userPrincipalName"].Value + "');";
-                            //dal.InsertInto("FolderPermissions", SQl);
-                        }
-                        cnt++;
-                    }
-                    Console.WriteLine("Total users: " + cnt);
-                }
-            }
+
+            //perm.GetUserRoleforFile(localrootfolder);
+
+
+
+            //using (var context = new PrincipalContext(ContextType.Domain, "acuvate.com"))
+            //{
+            //    using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            //    {
+            //        int cnt = 1;
+            //        foreach (var result in searcher.FindAll())
+            //        {
+            //            DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
+            //            //Console.WriteLine("First Name: " + de.Properties["givenName"].Value);
+            //            Console.WriteLine("SAM account name   : " + de.Properties["samAccountName"].Value);
+            //            //Console.WriteLine("User principal name: " + de.Properties["userPrincipalName"].Value);
+            //           //string abc = de.Properties["userPrincipalName"].Value.ToString();
+            //            //Console.WriteLine(abc);
+            //            if (false)
+            //            {
+            //               // string SQl = "insert into DomainUsers values ('" + de.Properties["userPrincipalName"].Value + "');";
+            //                //dal.InsertInto("FolderPermissions", SQl);
+            //            }
+            //            cnt++;
+            //        }
+            //        Console.WriteLine("Total users: " + cnt);
+            //    }
+            //}
            
             Console.WriteLine("=---------------------from list------------------------------");
           //  Dataaccess.perm.GetFilePermmssion(localrootfolder);
-            Dataaccess.perm.GetFolderPermmssion(localrootfolder);
+          //  Dataaccess.perm.GetFolderPermmssion(localrootfolder);
 
 
 
@@ -74,11 +79,7 @@ namespace FinalAcessTEst
                 context.Credentials = new SharePointOnlineCredentials(crd.userName, crd.password);
                 //GetFile(context);
 
-                tests.UploadFoldersRecursively(context, @"D:\UploadFolderTest", "LokeshPractice");
-                //ListSPPermissions12(context);
-                //dbtrail.UploadFolderstart(context, @"D:\UploadFolderTest", "LokeshPractice");
-
-                //AssignPermission(context, user, localrootfolder, RoleType.Reader);
+                perm.GetUserRoleforFile(context, localrootfolder);
                 Console.WriteLine("Exceution done");
 
             }

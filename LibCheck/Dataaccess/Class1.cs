@@ -119,5 +119,39 @@ namespace Dataaccess
                 return TableInfo1;
             }
         }
+        public DataTable GetUserRoleForFile(string FilePath)
+        {
+            SqlDataAdapter adapter=new SqlDataAdapter();
+            using (SqlConnection connection = new SqlConnection())
+            {
+                DataTable TableInfo1 = new DataTable();
+                connection.ConnectionString = @"Data Source=.;Initial Catalog=FolderUpload;Integrated Security=True";
+                connection.Open();
+                SqlCommand sqlCommand = new SqlCommand("Proc_GetUserRoleforFile", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@pFilePath", SqlDbType.NVarChar).Value = FilePath;
+                adapter.SelectCommand = sqlCommand;
+                adapter.Fill(TableInfo1);
+                return TableInfo1;
+            }
+           
+        }
+        public DataTable GetUserRoleForFolder(string FolderPath)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            using (SqlConnection connection = new SqlConnection())
+            {
+                DataTable TableInfo1 = new DataTable();
+                connection.ConnectionString = @"Data Source=.;Initial Catalog=FolderUpload;Integrated Security=True";
+                connection.Open();
+                SqlCommand sqlCommand = new SqlCommand("Proc_GetUserRoleforFolder", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@pFilePath", SqlDbType.NVarChar).Value = FolderPath;
+                adapter.SelectCommand = sqlCommand;
+                adapter.Fill(TableInfo1);
+                return TableInfo1;
+            }
+
+        }
     }
 }

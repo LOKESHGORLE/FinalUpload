@@ -150,3 +150,5 @@ end
 DELETE TOP (10)
 FROM  UserFilePermissions
 insert into FolderToSPPermissions values(13,3)
+update FileInfo set Path=Path+'\'+name
+select * from fileinfo
