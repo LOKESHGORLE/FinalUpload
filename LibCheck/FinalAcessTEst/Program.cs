@@ -79,7 +79,7 @@ namespace FinalAcessTEst
                 context.Credentials = new SharePointOnlineCredentials(crd.userName, crd.password);
                 //GetFile(context);
 
-                perm.GetUserRoleforFile(context, localrootfolder);
+                perm.GetUserRoleforFolder(context, localrootfolder);
                 Console.WriteLine("Exceution done");
 
             }

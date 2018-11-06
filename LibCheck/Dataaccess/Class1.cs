@@ -146,7 +146,7 @@ namespace Dataaccess
                 connection.Open();
                 SqlCommand sqlCommand = new SqlCommand("Proc_GetUserRoleforFolder", connection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.Add("@pFilePath", SqlDbType.NVarChar).Value = FolderPath;
+                sqlCommand.Parameters.Add("@pFolderPath", SqlDbType.NVarChar).Value = FolderPath;
                 adapter.SelectCommand = sqlCommand;
                 adapter.Fill(TableInfo1);
                 return TableInfo1;
